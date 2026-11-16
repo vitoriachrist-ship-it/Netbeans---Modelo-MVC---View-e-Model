@@ -4,6 +4,9 @@
  */
 package View;
 
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 /**
  *
  * @author ADS
@@ -11,13 +14,20 @@ package View;
 public class Login extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
+    private final Controller.LoginController controller;
 
     /**
      * Creates new form Login
      */
     public Login() {
-        initComponents();
+    initComponents();
+    this.controller = new Controller.LoginController(this);
+    try {
+        Model.DAO.Banco.inicia();
+    } catch (java.text.ParseException ex) {
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
     }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,6 +38,7 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         TextSenha = new javax.swing.JPasswordField();
         TextUsuario = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -38,6 +49,10 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton1.setText("ENTRAR");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 470, -1, -1));
 
         TextSenha.setText("jPasswordField1");
         getContentPane().add(TextSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 420, -1, -1));
@@ -67,6 +82,11 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.controller.entrarNoSistema();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -95,10 +115,31 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField TextSenha;
     private javax.swing.JTextField TextUsuario;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelFundo;
     // End of variables declaration//GEN-END:variables
+
+    public JPasswordField getTextSenha() {
+        return TextSenha;
+    }
+
+    public void setTextSenha(JPasswordField TextSenha) {
+        this.TextSenha = TextSenha;
+    }
+
+    public JTextField getTextUsuario() {
+        return TextUsuario;
+    }
+
+    public void setTextUsuario(JTextField TextUsuario) {
+        this.TextUsuario = TextUsuario;
+    }
+
+    public void exibeMensagem(String mensagem) {
+        javax.swing.JOptionPane.showMessageDialog(null, mensagem);
+    }
 }
