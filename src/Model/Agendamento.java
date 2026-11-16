@@ -84,4 +84,17 @@ public class Agendamento {
     public void setObservacao(String observacao) {
         this.observacao = observacao;
     }
+    public String getDataFormatada() {
+    if (this.data == null) {
+        return "";
+    }
+    return new SimpleDateFormat("dd/MM/yyyy").format(this.data);
+}
+
+public String getHoraFormatada() {
+    if (this.data == null) {
+        return this.hora != null ? this.hora : "";
+    }
+    return new SimpleDateFormat("HH:mm").format(this.data);
+}
 }

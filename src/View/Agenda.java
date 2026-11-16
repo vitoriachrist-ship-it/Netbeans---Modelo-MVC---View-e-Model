@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View;
+import model.Cliente;
+import model.Servico;
 
 /**
  *
@@ -11,12 +13,22 @@ package View;
 public class Agenda extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Agenda.class.getName());
-
+    private final Controller.AgendaController controller;
+    
     /**
      * Creates new form Agenda
      */
     public Agenda() {
         initComponents();
+        this.controller = new Controller.AgendaController(this);
+        iniciar();
+    }
+
+    private void iniciar() {
+    this.controller.atualizaTabela();
+    this.controller.atualizaCliente();
+    this.controller.atualizaServico();
+    this.controller.atualizaValor();
     }
 
     /**
@@ -28,21 +40,21 @@ public class Agenda extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField4 = new javax.swing.JTextField();
+        TxtValor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TableAgendamentos = new javax.swing.JTable();
         jTextField3 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBoxServico = new javax.swing.JComboBox<>();
         jToggleButton1 = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBoxCliente = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -51,15 +63,15 @@ public class Agenda extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField4.setText("Texto de Valor");
-        jTextField4.addActionListener(this::jTextField4ActionPerformed);
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, -1, -1));
+        TxtValor.setText("Texto de Valor");
+        TxtValor.addActionListener(this::TxtValorActionPerformed);
+        getContentPane().add(TxtValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, -1, -1));
 
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Valor");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TableAgendamentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", "Alan", "Corte", "10", "16/03/2026", "08:00", null},
                 {"2", "Abgail", "Barba", "20", "16/03/2026", "08:30", null},
@@ -70,7 +82,7 @@ public class Agenda extends javax.swing.JFrame {
                 "Id", "Cliente", "Serviço", "Valor", "Data", "Hora", "Observação"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(TableAgendamentos);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 570, 750, 90));
 
@@ -97,9 +109,9 @@ public class Agenda extends javax.swing.JFrame {
         jLabel4.setText("Cliente");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Barba", "Cabelo", "Barba + Cabelo" }));
-        jComboBox2.addActionListener(this::jComboBox2ActionPerformed);
-        getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, -1, -1));
+        jComboBoxServico.addItemListener(this::jComboBoxServicoItemStateChanged);
+        jComboBoxServico.addActionListener(this::jComboBoxServicoActionPerformed);
+        getContentPane().add(jComboBoxServico, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, -1, -1));
 
         jToggleButton1.setText("AGENDAR");
         getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, -1, -1));
@@ -110,8 +122,8 @@ public class Agenda extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 150, 240, 190));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alan", "Pedro", "Giovane", " " }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 200, -1, -1));
+        jComboBoxCliente.addActionListener(this::jComboBoxClienteActionPerformed);
+        getContentPane().add(jComboBoxCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 200, -1, -1));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Nome");
@@ -133,14 +145,37 @@ public class Agenda extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void TxtValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtValorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_TxtValorActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void jComboBoxServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxServicoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_jComboBoxServicoActionPerformed
 
+    private void jComboBoxClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxClienteActionPerformed
+
+    private void jComboBoxServicoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxServicoItemStateChanged
+      this.controller.atualizaValor();        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxServicoItemStateChanged
+
+    public javax.swing.JComboBox<Cliente> getJComboBoxCliente() {
+    return jComboBoxCliente;
+    }
+
+    public void setJComboBoxCliente(javax.swing.JComboBox<Cliente> JComboBoxCliente) {
+        this.jComboBoxCliente = JComboBoxCliente;
+    }
+
+    public javax.swing.JComboBox<Servico> getJComboBoxServico() {
+        return jComboBoxServico;
+    }
+
+    public void setJComboBoxServico(javax.swing.JComboBox<Servico> JComboBoxServico) {
+        this.jComboBoxServico = JComboBoxServico;
+    }
     /**
      * @param args the command line arguments
      */
@@ -166,9 +201,19 @@ public class Agenda extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new Agenda().setVisible(true));
     }
 
+    public javax.swing.JTable getTableAgendamentos() {
+        return TableAgendamentos;
+    }
+
+    public void setTableAgendamentos(javax.swing.JTable TableAgendamentos) {
+        this.TableAgendamentos = TableAgendamentos;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JTable TableAgendamentos;
+    private javax.swing.JTextField TxtValor;
+    private javax.swing.JComboBox<Cliente> jComboBoxCliente;
+    private javax.swing.JComboBox<Servico> jComboBoxServico;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -179,12 +224,26 @@ public class Agenda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
+
+    public javax.swing.JTextField getTextValor() {
+     return TxtValor;
+    }
+
+    public void setTextValor(javax.swing.JTextField TextValor) {
+        this.TxtValor = TextValor;
+    }
+
+    public javax.swing.JTextField getTxtValor() {
+    return TxtValor;
+}
+
+    public void setTxtValor(javax.swing.JTextField TxtValor) {
+    this.TxtValor = TxtValor;
+}
 }
